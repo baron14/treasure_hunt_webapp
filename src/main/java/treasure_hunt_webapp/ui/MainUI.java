@@ -11,7 +11,6 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -50,11 +49,18 @@ public class MainUI extends UI {
 
 	private Component createRouteUI() {
 		VerticalLayout main = new VerticalLayout();
+		main.setSpacing(true);
 		main.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
 		TextField name = new TextField();
+		name.setWidth("500px");
 		name.setPropertyDataSource(new ObjectProperty<String>(route.getName()));
-		main.addComponent(new HorizontalLayout(new Label("Route Name:"), name));
+		Label nameLabel = new Label("Route Name:");
+		HorizontalLayout nameLayout = new HorizontalLayout(nameLabel, name);
+		nameLayout.setWidth("100%");
+		nameLayout.setExpandRatio(nameLabel, 1f);
+		nameLayout.setExpandRatio(name, 8f);
+		main.addComponent(nameLayout);
 
 		steps = new ItemPanel("Steps") {
 			@Override
