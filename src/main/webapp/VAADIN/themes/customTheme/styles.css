@@ -1,9 +1,17 @@
 @import "../reindeer/legacy-styles.css";
 
 .background {
-    background: #C0C0C0;
+	background: #C0C0C0;
 }
 
 .content {
+	background: white;
+}
+
+.header {
+	background: black;
+}
+
+.innerHeader{
 	background: white
 }
