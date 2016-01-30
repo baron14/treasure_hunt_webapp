@@ -17,12 +17,12 @@ import com.vaadin.ui.VerticalLayout;
  * @author Jordan
  *
  */
-public class ItemPanel extends Panel {
+public abstract class ItemPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	private Label headerText;
 	private Label iconLabel;
-	private Layout content;
+	protected Layout content;
 
 	public ItemPanel(String headerText) {
 		this.headerText = new Label(headerText);
@@ -47,20 +47,38 @@ public class ItemPanel extends Panel {
 			}
 		});
 
+		HorizontalLayout footer = new HorizontalLayout(createAdd());
+
 		// Create root and add children - header and content
-		VerticalLayout main = new VerticalLayout(new HorizontalLayout(iconLayout, headerText), content);
+		VerticalLayout main = new VerticalLayout(new HorizontalLayout(
+				iconLayout, headerText), content, footer);
 		main.setSizeFull();
 
 		return main;
 	}
-	
+
 	private void swapIcon() {
-		iconLabel.setValue(content.isVisible() ? FontAwesome.MINUS_CIRCLE.getHtml() : FontAwesome.PLUS_CIRCLE.getHtml());
+		iconLabel.setValue(content.isVisible() ? FontAwesome.MINUS_CIRCLE
+				.getHtml() : FontAwesome.PLUS_CIRCLE.getHtml());
 	}
-	
-	public void addItem(Component comp){
-		content.addComponent(comp);
+
+	private Component createAdd() {
+		VerticalLayout main = new VerticalLayout();
+
+		Label addLabel = new Label();
+		addLabel.setContentMode(ContentMode.HTML);
+		addLabel.setValue(FontAwesome.PLUS.getHtml());
+		main.addComponent(addLabel);
+		main.addLayoutClickListener(new LayoutClickListener() {
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				addItem();
+			}
+		});
+		return main;
 	}
+
+	public abstract void addItem();
 
 	/*
 	 * Getters and Setters
