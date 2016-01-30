@@ -49,7 +49,7 @@ public abstract class ItemPanel extends Panel {
 
 		HorizontalLayout footer = new HorizontalLayout(createAdd());
 
-		// Create root and add children - header and content
+		// Create root and add children - header, content and footer
 		VerticalLayout main = new VerticalLayout(new HorizontalLayout(
 				iconLayout, headerText), content, footer);
 		main.setSizeFull();
@@ -72,14 +72,37 @@ public abstract class ItemPanel extends Panel {
 		main.addLayoutClickListener(new LayoutClickListener() {
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
-				addItem();
+				addItemInner();
 			}
 		});
 		return main;
 	}
 
-	public abstract void addItem();
+	private void addItemInner(){
+		Label delete = new Label();
+		delete.setContentMode(ContentMode.HTML);
+		delete.setValue(FontAwesome.MINUS.getHtml());
+		VerticalLayout deleteLayout = new VerticalLayout(delete);
+		
+		VerticalLayout addedItem = addItem();
+		HorizontalLayout main = new HorizontalLayout(deleteLayout, addedItem);
+		main.setSpacing(true);
+		
+		deleteLayout.addLayoutClickListener(new LayoutClickListener() {
+			@Override
+			public void layoutClick(LayoutClickEvent event) {
+				content.removeComponent(main);
+				removeItem(addedItem.getData());		
+			}
+		});
+		
+		content.addComponent(main);
+	}
+	
+	public abstract VerticalLayout addItem();
 
+	public abstract void removeItem(Object object);
+	
 	/*
 	 * Getters and Setters
 	 */

@@ -14,6 +14,14 @@
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
+	<repositories>
+		<repository>
+			<id>mjorm-webdav-maven-repo</id>
+			<name>mjorm maven repository</name>
+			<url>http://mongo-java-orm.googlecode.com/svn/maven/repo/</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -21,6 +29,28 @@
 			<artifactId>vaadin-spring-boot-starter</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode</groupId>
+			<artifactId>mongo-java-orm</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+
+
+
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20151123</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -12,7 +12,7 @@ public class Question {
 
 	private String question;
 	private ArrayList<String> answers;
-	private boolean isImage;
+	private Boolean isImage;
 	private String correctAnswer;
 	
 	public Question(){
@@ -30,7 +30,7 @@ public class Question {
 		this.answers = answers;
 	}
 	
-	public void setIsImage(boolean isImage) {
+	public void setIsImage(Boolean isImage) {
 		this.isImage = isImage;
 	}
 	
@@ -46,7 +46,7 @@ public class Question {
 		return answers;
 	}
 	
-	public boolean getIsImage() {
+	public Boolean getIsImage() {
 		return isImage;
 	}
 	

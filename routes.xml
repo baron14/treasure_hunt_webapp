@@ -1,0 +1,541 @@
+<xml>
+<title>
+Treasure Hunt on Heriot-Watt Campus
+</title>
+
+<route>
+    <name>Route 1</name>
+    <steps>
+	<step>
+		<name>R1_Introduction</name>
+		<text>Hello freshers! Welcome to the Heriot-Watt Halloween Treasure Hunt. When you are ready press "Next".</text>
+		<treasure></treasure>
+		<solution></solution>
+		<points>
+		    <!-- point>
+		        <name>Media</name>
+		        <latitude>55.912727</latitude>
+		        <longitude>-3.3212545</longitude>
+		    </point>
+		    <point>
+		        <name>Shed</name>
+		        <latitude>55.913082</latitude>
+		        <longitude>-3.3217564</longitude>
+		    </point-->
+		</points>
+	</step>
+	<step>
+		<name>R1_C1</name>
+		<text>Halloween night is full of gloom
+Here comes the witch bringing your first clue
+
+Walk South West pass two junctions 
+Stop when you reach 4th Gait junction
+Continue South to the end of 4th Gait
+You know you are there when the buildings end
+
+Numbered post from the A1 at Haddington
+The longest road connecting Edinburgh and London
+		</text>
+		<treasure>witch</treasure>
+		<solution>The answer is a Mile Post at the end of the 4th Gait.</solution>
+		<points>
+		    <!-- point>
+		        <name>Test1</name>
+		        <latitude>55.974323</latitude>
+		        <longitude>-3.6954951</longitude>
+		        <hr>
+		            <range>15.0f</range>
+		        </hr>
+		    </point>
+		    <point>
+		        <name>Home</name>
+		        <latitude>55.973846</latitude>
+		        <longitude>-3.694999</longitude>
+		        <hr>
+		            <range>15.0f</range>
+		        </hr>
+		    </point> 		  
+		    <point>
+		        <name>Test2</name>
+		        <latitude>55.973667</latitude>
+		        <longitude>-3.6953807</longitude>
+		        <hr>
+		            <range>15.0f</range>
+		        </hr>
+		    </point-->		   
+		    <point>
+		        <name>Gait 4</name>
+		        <latitude>55.911304</latitude>
+		        <longitude>-3.3260615</longitude>
+		        <hr>
+		            <mrange>37.0f</mrange>
+		            <srange>2.0f</srange>
+		        </hr>
+		    </point>
+		    <point>
+		        <name>Old Milepost</name>
+		        <latitude>55.910408</latitude>
+		        <longitude>-3.3248854</longitude>
+		        <hr>
+		            <mrange>43.0f</mrange>
+		            <srange>14.0f</srange>
+		        </hr>
+		    </point>
+		</points>
+		<question>
+			<name></name>
+			<text>Which town was 1 mile from the post original location?</text>
+			<answer>
+			    <item id="1" correct="yes">Dunbar</item>
+				<item id="2">Greenock</item>
+				<item id="3">Broxburn</item>
+				<item id="4">West Barns</item>
+			</answer>
+			<solution></solution>
+		</question>	
+		<question>
+			<name></name>
+			<text>Which of these writings is not on the post?</text>
+			<answer>
+			    <item id="1">R13</item>
+				<item id="2" correct="yes">D20</item>
+				<item id="3">H15</item>
+				<item id="4">E29</item>
+			</answer>
+			<solution></solution>
+		</question>			
+	</step>
+	<step>
+		<name>R1_C2</name>
+		<text>Orange carved faces light up the night
+Their eerie faces devotedly shine bright
+
+Walk North East along the left path stopping at 3rd Gait junction
+Go South East till the end pass the recycling station
+The lawn is visible in South West direction
+Now head towards its curling rink impression
+
+Find your clue where the sun always shines
+At the heart it stood before 1956		    
+		</text>		
+		<treasure>pumpkin</treasure>
+		<solution>The answer is a Sundial Base in the middle of the sunken garden.</solution>
+		<points>
+		    <!-- point>
+		        <name>Home</name>
+		        <latitude>55.973846</latitude>
+		        <longitude>-3.694999</longitude>
+		        <hr>
+		            <range>15.0f</range>
+		        </hr>
+		    </point>
+		    <point>
+		        <name>Test1</name>
+		        <latitude>55.974323</latitude>
+		        <longitude>-3.6954951</longitude>
+		        <hr>
+		            <range>15.0f</range>
+		        </hr>
+		    </point-->
+		    <point>
+		        <name>Gait 3</name>
+		        <latitude>55.91093</latitude>
+		        <longitude>-3.3235178</longitude>
+		        <hr>
+		            <mrange>33.0f</mrange>
+		            <srange>15.0f</srange>
+		        </hr>
+		    </point>
+		    <!-- point>
+		        <name>Zebra Crossing</name>
+		        <latitude>55.91093</latitude>
+		        <longitude>-3.3235178</longitude>
+		        <hr>
+		            <range>31.0f</range>
+		        </hr>
+		    </point-->
+		    <point>
+		        <name>Sunken Garden</name>
+		        <latitude>55.909912</latitude>
+		        <longitude>-3.322602</longitude>
+		        <hr>
+		            <mrange>46.0f</mrange>
+		            <srange>12.0f</srange>
+		        </hr>
+		    </point>
+		    <point>
+		        <name>Sundial Base</name>
+		        <latitude>55.90929</latitude>
+		        <longitude>-3.3232577</longitude>
+		        <hr>
+		            <mrange>38.0f</mrange>
+		            <srange>12.0f</srange>
+		        </hr>
+		    </point>
+		</points>
+		<question>
+			<name></name>
+			<text>What is the shape of the top surface of the plinth?</text>
+			<answer>
+			    <item id="1">Square</item>
+				<item id="2">Oval</item>
+				<item id="3">Triangle</item>
+				<item id="4" correct="yes">Octagon</item>
+			</answer>
+			<solution></solution>
+		</question>	
+		<question>
+			<name></name>
+			<text>How many links does the plinth have?</text>
+			<answer>
+			    <item id="1">Five</item>
+				<item id="2" correct="yes">Four</item>
+				<item id="3">Three</item>
+				<item id="4">Two</item>
+			</answer>
+			<solution></solution>
+		</question>			
+	</step>	
+	<step>
+		<name>R1_C3</name>
+		<text>The next clue is just a few paces away
+So don't agitate yourself too much
+Walk South East across the lawn
+Remember to stop when you reach the first path
+
+Out in the dark at the very heart of this estate
+Once upon a time there stood Riccarton House
+A fine mansion with a loch and gardens
+It is now filled with archives and books 	   
+		</text>
+		<treasure>mansion</treasure>
+		<solution>The answer is the library</solution>
+		<points>
+		    <point>
+		        <name>Library</name>
+		        <latitude>55.90891</latitude>
+		        <longitude>-3.3227582</longitude>
+		        <hr>
+		            <mrange>51.0f</mrange>
+		            <srange>12.0f</srange>
+		        </hr>
+		    </point>
+		</points>
+		<question>
+			<name></name>
+			<text>How many storeys is the building right in front of you?</text>
+			<answer>
+			    <item id="1">One</item>
+				<item id="2">Two</item>
+				<item id="3">Three</item>
+				<item id="4" correct="yes">Four</item>
+			</answer>
+			<solution></solution>
+		</question>	
+		<question>
+			<name></name>
+			<text>What is the name of this building?</text>
+			<answer>
+			    <item id="1">Paul Stobart Building</item>
+				<item id="2">Mary Burton Building</item>
+				<item id="3" correct="yes">Cameron Smail Library</item>
+				<item id="4">Lord Balerno Building</item>
+			</answer>
+			<solution></solution>
+		</question>			
+	</step>	
+	<step>
+		<name>R1_C4</name>
+		<text>Reach deep inside for your next indication
+Go South West to the first junction
+Walk South East until the Freeway junction
+Turn North East continue towards main reception
+
+On a red sandstone plinth a figure is seated
+An iconic role model since the earliest days
+The steam engine gave him his fame
+At National Portrait Gallery its double can be found    
+		</text>
+		<treasure>tomb</treasure>
+		<solution>The answer is the James Watt statue in front of the reception entrance.</solution>
+		<points>
+		    <point>
+		        <name>Cameron Smail Road</name>
+		        <latitude>55.908752</latitude>
+		        <longitude>-3.3230534</longitude>
+		        <hr>
+		            <mrange>35.0f</mrange>
+		            <srange>23.0f</srange>
+		        </hr>
+		    </point>
+		    <point>
+		        <name>Freeway</name>
+		        <latitude>55.908096</latitude>
+		        <longitude>-3.322073</longitude>
+		        <hr>
+		            <mrange>37.0f</mrange>
+		            <srange>21.0f</srange>
+		        </hr>
+		    </point>
+		    <!-- point>
+		        <name>Lord Balerno Building</name>
+		        <latitude>55.908831</latitude>
+		        <longitude>-3.320363</longitude>
+		        <hr>
+		            <mrange>39.0f</mrange>
+		            <srange>24.0f</srange>
+		        </hr>
+		    </point-->
+		    <point>
+		        <name>James Watt</name>
+		        <latitude>55.90929</latitude>
+		        <longitude>-3.3199353</longitude>
+		        <hr>
+		            <mrange>41.0f</mrange>
+		            <srange>21.0f</srange>
+		        </hr>
+		    </point>
+		</points>
+		<question>
+			<name></name>
+			<text>Who is the figure on the plinth?</text>
+			<answer>
+			    <item id="1">George Heriot</item>
+				<item id="2" correct="yes">James Watt</item>
+				<item id="3">Peter Slater</item>
+				<item id="4">Lord Balerno</item>
+			</answer>
+			<solution></solution>
+		</question>	
+		<question>
+			<name></name>
+			<text>Who was the sculptor?</text>
+			<answer>
+			    <item id="1">William Edmonds</item>
+				<item id="2">James Butler</item>
+				<item id="3" correct="yes">Peter Slater</item>
+				<item id="4">Stanley Wilson</item>
+			</answer>
+			<solution></solution>
+		</question>			
+	</step>
+	<step>	
+		<name>R1_C5</name>
+		<text>The great pumpkin gives out wishes
+Your next clue is within glimpse
+Cross the road going towards East
+Walk a few steps before you stop
+
+Hungry goblins wait on the bridge
+Find them a snack on a haunted field
+Cow Parade captures imaginations worldwide
+It grazed for three months at Edinburgh’s Festival Square	    
+		</text>
+		<treasure>goblin</treasure>
+		<solution>The answer is the Watt a Clever Cow in the middle of the field.</solution>
+		<points>
+		    <point>
+		        <name>Clever Cow</name>
+		        <latitude>55.90913</latitude>
+		        <longitude>-3.3192096</longitude>
+		        <hr>
+		            <mrange>34.0f</mrange>
+		            <srange>16.0f</srange>
+		        </hr>
+		    </point>
+		</points>
+		<question>
+			<name></name>
+			<text>Which of these is not on the body of the animal?</text>
+			<answer>
+			    <item id="1">Butterflies</item>
+				<item id="2" correct="yes">A rocket</item>
+				<item id="3">A globe</item>
+				<item id="4">A jacket</item>
+			</answer>
+			<solution></solution>
+		</question>	
+	</step>	
+	
+	<step>
+		<name>R1_C6</name>
+		<text>Watch out the zombies crawl to your next clue
+Cross back over heading North East 
+When you see Gait 9 turn into it
+Continue North West along Meadow Road
+
+Keep your eyes peeled for a whale and its calf
+Trying intensely to leap from the waves
+They once were lively and now they are inert
+A curse was placed to turn them into rock	   
+		</text>
+		<treasure>spider</treasure>
+		<solution>The answer is the Stone for the Whales statue at the end of Meadow Road.</solution>
+		<points>
+		    <point>
+		        <name>Gait 9</name>
+		        <latitude>55.909843</latitude>
+		        <longitude>-3.3183894</longitude>
+		        <hr>
+		            <mrange>33.0f</mrange>
+		            <srange>14.0f</srange>
+		        </hr>
+		    </point>
+		    <point>
+		        <name>Stone of Whales</name>
+		        <latitude>55.9106</latitude>
+		        <longitude>-3.3190334</longitude>
+		        <hr>
+		            <mrange>35.0f</mrange>
+		            <srange>18.0f</srange>
+		        </hr>
+		    </point>
+		</points>
+		<question>
+			<name></name>
+			<text>When was this sculpture inaugurated?</text>
+			<answer>
+			    <item id="1">18th May 2014</item>
+				<item id="2">18th March 2004</item>
+				<item id="3">18th May 1984</item>
+				<item id="4" correct="yes">18th March 1994</item>
+			</answer>
+			<solution></solution>
+		</question>	
+		<question>
+			<name></name>
+			<text>Who was given the honour to do so?</text>
+			<answer>
+			    <item id="1">Countess of Mansfield</item>
+				<item id="2">Sir John Jeffrey</item>
+				<item id="3">Sir William Gibson-Craig</item>
+				<item id="4" correct="yes">Lady MacKay of Clashfern</item>
+			</answer>
+			<solution></solution>
+		</question>	
+	</step>	
+	
+	<step>
+		<name>R1_C7</name>
+		<text>Walk North East towards the loch
+Stop as soon as you reach a bridge
+Cross the bridge then head South West
+Continue walking towards the buildings
+
+The stinky potion is starting to ooze
+Contain the spell before it is too late
+Search for a cauldron, that’s what you need
+Situated on the grass guarded by a Countess   
+		</text>
+		<treasure>cauldron</treasure>
+		<solution>The answer is May Cippico Fountain on the grass next to the Hugh Nisbet building.</solution>
+		<points>
+		    <point>
+		        <name>Loch</name>
+		        <latitude>55.911194</latitude>
+		        <longitude>-3.3185098</longitude>
+		        <hr>
+		            <mrange>35.0f</mrange>
+		            <srange>14.0f</srange>
+		        </hr>
+		    </point>
+		    <point>
+		        <name>Bridge</name>
+		        <latitude>55.911743</latitude>
+		        <longitude>-3.3194118</longitude>
+		        <hr>
+		            <mrange>31.0f</mrange>
+		            <srange>13.0f</srange>
+		        </hr>
+		    </point>
+		    <point>
+		        <name>May Cippico Fountain</name>
+		        <latitude>55.9108</latitude>
+		        <longitude>-3.3221607</longitude>
+		        <hr>
+		            <mrange>43.0f</mrange>
+		            <srange>18.0f</srange>
+		        </hr>
+		    </point>
+		</points>
+		<question>
+			<name></name>
+			<text>Whose gift was this sculpture from?</text>
+			<answer>
+			    <item id="1">The Watt Fund</item>
+				<item id="2" correct="yes">The Constance Fund</item>
+				<item id="3">National Art Gallery</item>
+				<item id="4">Museum of Scotland</item>
+			</answer>
+			<solution></solution>
+		</question>	
+	</step>	
+	
+	<step>
+		<name>R1_C8</name>
+		<text>Pass the cauldron going down the stairs
+Walk North East towards the first junction
+Continue North West along 2nd Gait 
+Opposite the Postgraduate Centre your final clue awaits you
+
+Halloween is not all fright and fear
+A trick or treat is waiting near
+The largest hot strip steel mill in Western Europe
+Closed in 1992 commemorated by a stone    
+		</text>
+		<treasure>treat</treasure>
+		<solution>The answer is the Stone for Ravenscraig in the little side park next to Earl Mountbatten building.</solution>
+		<points>
+		    <point>
+		        <name>Gait 2</name>
+		        <latitude>55.911175</latitude>
+		        <longitude>-3.3218646</longitude>
+		        <hr>
+		            <mrange>39.0f</mrange>
+		            <srange>16.0f</srange>
+		        </hr>
+		    </point>
+		    <point>
+		        <name>Stone of Ravenscraig</name>
+		        <latitude>55.912224</latitude>
+		        <longitude>-3.3228478</longitude>
+		        <hr>
+		            <mrange>39.0f</mrange>
+		            <srange>18.0f</srange>
+		        </hr>
+		    </point>
+		</points>
+		<question>
+			<name></name>
+			<text>What object does the sculpture represent?</text>
+			<answer>
+			    <item id="1"  correct="yes">Broken Chain</item>
+				<item id="2">An Anchor</item>
+				<item id="3">A Scale</item>
+				<item id="4">An Arrow</item>
+			</answer>
+			<solution></solution>
+		</question>	
+		<question>
+			<name></name>
+			<text>Who was its creator?</text>
+			<answer>
+			    <item id="1">James Butler</item>
+				<item id="2" correct="yes">Stanley Wilson</item>
+				<item id="3">Peter Slater</item>
+				<item id="4">William Edmonds</item>
+			</answer>
+			<solution></solution>
+		</question>	
+	</step>	
+	
+	<step>
+		<name>R1_CloseTask</name>
+		<text>Well done!  You have completed your treasure hunt </text>
+		<treasure></treasure>
+		<solution></solution>
+	</step>	
+	</steps>
+</route>
+</xml>

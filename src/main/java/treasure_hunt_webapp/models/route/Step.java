@@ -46,7 +46,7 @@ public class Step {
 		this.points = points;
 	}
 	
-	public void setQuestion(ArrayList<Question> questions){
+	public void setQuestions(ArrayList<Question> questions){
 		this.questions = questions;
 	}
 		

@@ -2,6 +2,8 @@ package treasure_hunt_webapp.models.route;
 
 import java.util.ArrayList;
 
+import org.bson.types.ObjectId;
+
 /**
  * @author Mei Yii Lim
  *
@@ -9,7 +11,7 @@ import java.util.ArrayList;
  */
 
 public class Route {
-
+	private ObjectId id;
 	private String name;
 	private ArrayList<Step> steps;
 	
@@ -32,5 +34,18 @@ public class Route {
 
 	public void setSteps(ArrayList<Step> steps) {
 		this.steps = steps;
+	}
+
+	@Override
+	public String toString() {
+		return "Route [name=" + name + ", steps=" + steps + "]";
+	}
+
+	public ObjectId getId() {
+		return id;
+	}
+
+	public void setId(ObjectId id) {
+		this.id = id;
 	}
 }
