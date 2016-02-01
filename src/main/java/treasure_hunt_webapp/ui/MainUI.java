@@ -38,8 +38,9 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
 
-@Theme("customTheme")
+@Theme("valo")
 @SpringUI
 @VaadinServletConfiguration(widgetset = "com.vaadin.tapio.googlemaps.WidgetSet", productionMode = false, ui = MainUI.class)
 public class MainUI extends UI {
@@ -86,22 +87,25 @@ public class MainUI extends UI {
 		VerticalLayout back = new VerticalLayout();
 		back.setDefaultComponentAlignment(Alignment.TOP_CENTER);
 		back.setStyleName("background");
-		back.setSizeFull();
+		back.setSizeUndefined();
+		back.setWidth("100%");
 
 		VerticalLayout content = new VerticalLayout();
 		content.setMargin(true);
 		back.addComponent(content);
+		content.setSizeUndefined();
 		content.setWidth("80%");
-		content.setHeight("100%");
 		content.setStyleName("content");
 
-		content.addComponent(new Button("Save", new ClickListener() {
+		Button saveButton = new Button("Save", new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				System.out.println(route.toString());
 				routeDao.create(route);
 			}
-		}));
+		});
+		saveButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+		content.addComponent(saveButton);
 
 		ComboBox routesList = new ComboBox("Saved Routes");
 		for (Route r : savedRoutes) {
@@ -111,11 +115,26 @@ public class MainUI extends UI {
 		routesList.addValueChangeListener(new ValueChangeListener() {
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				Route loadingRoute = savedRoutes[(Integer)event.getProperty().getValue()-1];
+				Route loadingRoute = savedRoutes[(Integer) event.getProperty()
+						.getValue() - 1];
 				System.out.println(loadingRoute);
 			}
 		});
-		content.addComponent(routesList);
+		
+		Button loadButton = new Button(
+				"Load", new ClickListener() {
+					@Override
+					public void buttonClick(ClickEvent event) {
+						System.out.println("Loading...");
+						System.out.println(routesList.getItem(routesList
+								.getValue())); // TODO
+					}
+				});
+		loadButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+		HorizontalLayout horizLoad = new HorizontalLayout(routesList, loadButton);
+		horizLoad.setComponentAlignment(loadButton, Alignment.BOTTOM_LEFT);
+		content.addComponent(horizLoad);
+		content.addComponent(new Label("<hr />", Label.CONTENT_XHTML));
 
 		Component routeUI = createRouteUI();
 		content.addComponent(routeUI);
@@ -125,7 +144,9 @@ public class MainUI extends UI {
 
 		// Main
 		VerticalLayout main = new VerticalLayout(back);
-		main.setSizeFull();
+		//main.setSizeFull();
+		main.setSizeUndefined();
+		main.setWidth("100%");
 		main.setExpandRatio(back, 6f);
 
 		return main;
@@ -363,14 +384,12 @@ public class MainUI extends UI {
 	}
 
 	private VerticalLayout createQuestionUI(Question question) {
-		VerticalLayout root = new VerticalLayout();
-		root.setData(question);
+		VerticalLayout main = new VerticalLayout();
+		main.setData(question);
 
-		GridLayout main = new GridLayout(2, 1);
-		main.setSpacing(true);
-		main.setDefaultComponentAlignment(Alignment.MIDDLE_RIGHT);
-
-		TextField questionText = new TextField();
+		main.addComponent(new Label("Question #:"));
+		
+		TextArea questionText = new TextArea();
 		questionText.setWidth(TEXTFIELD_WIDTH);
 		questionText.addTextChangeListener(new TextChangeListener() {
 			@Override
@@ -378,7 +397,7 @@ public class MainUI extends UI {
 				question.setQuestion(event.getText());
 			}
 		});
-		main.addComponents(new Label("Question:"), questionText);
+		main.addComponents(questionText);
 
 		ItemPanel answers = new ItemPanel("Answers:") {
 			List<CheckBox> checks = new ArrayList<CheckBox>();
@@ -409,8 +428,7 @@ public class MainUI extends UI {
 		};
 		main.addComponent(answers);
 
-		root.addComponent(main);
-		return root;
+		return main;
 	}
 
 	private VerticalLayout createAnswerUI(Question question,
@@ -421,6 +439,7 @@ public class MainUI extends UI {
 		main.setData(data);
 
 		TextArea answer = new TextArea();
+		answer.setWidth(TEXTFIELD_WIDTH);
 		answer.addTextChangeListener(new TextChangeListener() {
 			@Override
 			public void textChange(TextChangeEvent event) {
@@ -437,7 +456,7 @@ public class MainUI extends UI {
 			}
 		});
 
-		CheckBox isCorrect = new CheckBox("isCorrect:");
+		CheckBox isCorrect = new CheckBox();
 		isCorrect.addValueChangeListener(new ValueChangeListener() {
 			@Override
 			public void valueChange(ValueChangeEvent event) {
@@ -453,8 +472,10 @@ public class MainUI extends UI {
 		checks.add(isCorrect);
 		data.add(1, isCorrect);
 
-		main.addComponent(new HorizontalLayout(new Label("Question #:"),
-				isCorrect));
+		HorizontalLayout horiz = new HorizontalLayout(new Label("Question #:"),
+				new Label("isCorrect:"), isCorrect);
+		horiz.setSpacing(true);
+		main.addComponent(horiz);
 		main.addComponent(answer);
 
 		return main;

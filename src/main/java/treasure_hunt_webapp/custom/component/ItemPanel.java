@@ -10,6 +10,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * Class for wrapping content in a collapsable panel
@@ -29,6 +30,7 @@ public abstract class ItemPanel extends Panel {
 		this.content = new VerticalLayout();
 
 		this.setSizeFull();
+		this.setStyleName(ValoTheme.PANEL_BORDERLESS);
 		this.setContent(this.init());
 	}
 
@@ -50,10 +52,12 @@ public abstract class ItemPanel extends Panel {
 		HorizontalLayout footer = new HorizontalLayout(createAdd());
 
 		// Create root and add children - header, content and footer
-		VerticalLayout main = new VerticalLayout(new HorizontalLayout(
-				iconLayout, headerText), content, footer);
+		HorizontalLayout horizontalLayout = new HorizontalLayout(
+				iconLayout, headerText);
+		horizontalLayout.setSpacing(true);
+		VerticalLayout main = new VerticalLayout(horizontalLayout, content, footer);
 		main.setSizeFull();
-
+		
 		return main;
 	}
 
