@@ -2,10 +2,12 @@ package treasure_hunt_webapp.dao;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
+import org.bson.types.ObjectId;
 import org.xml.sax.SAXException;
 
 import treasure_hunt_webapp.models.route.Route;
@@ -47,6 +49,11 @@ public class RouteDao {
 
 	public void delete(Route route) {
 		dao.deleteObject(ROUTES_COLLECTION, route.getId());
+	}
+	
+	public Route[] getRoutes(){
+		ObjectId[] ids = new ObjectId[]{new ObjectId("56ad3679548c5a5da726dd74")};
+		return dao.readObjects("routes", ids, Route.class);
 	}
 
 }

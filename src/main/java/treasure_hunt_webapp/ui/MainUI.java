@@ -28,6 +28,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
@@ -52,6 +53,8 @@ public class MainUI extends UI {
 
 	private RouteDao routeDao;
 
+	private Route[] savedRoutes;
+
 	@Override
 	protected void init(VaadinRequest request) {
 		try {
@@ -61,6 +64,9 @@ public class MainUI extends UI {
 			throw new RuntimeException(e);
 		}
 		route = new Route();
+
+		savedRoutes = routeDao.getRoutes();
+
 		this.setContent(createUI());
 	}
 
@@ -88,7 +94,6 @@ public class MainUI extends UI {
 		content.setWidth("80%");
 		content.setHeight("100%");
 		content.setStyleName("content");
-		content.addComponent(createRouteUI());
 
 		content.addComponent(new Button("Save", new ClickListener() {
 			@Override
@@ -98,8 +103,28 @@ public class MainUI extends UI {
 			}
 		}));
 
+		ComboBox routesList = new ComboBox("Saved Routes");
+		for (Route r : savedRoutes) {
+			Object id = routesList.addItem();
+			routesList.setItemCaption(id, r.getName());
+		}
+		routesList.addValueChangeListener(new ValueChangeListener() {
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				Route loadingRoute = savedRoutes[(Integer)event.getProperty().getValue()-1];
+				System.out.println(loadingRoute);
+			}
+		});
+		content.addComponent(routesList);
+
+		Component routeUI = createRouteUI();
+		content.addComponent(routeUI);
+
+		content.setExpandRatio(routeUI, 4);
+		content.setSpacing(true);
+
 		// Main
-		VerticalLayout main = new VerticalLayout(header, back);
+		VerticalLayout main = new VerticalLayout(back);
 		main.setSizeFull();
 		main.setExpandRatio(back, 6f);
 
@@ -238,7 +263,7 @@ public class MainUI extends UI {
 				question.setQuestion("");
 
 				step.getQuestions().add(question);
-				
+
 				return createQuestionUI(question);
 			}
 
@@ -260,7 +285,7 @@ public class MainUI extends UI {
 	private VerticalLayout createPointUI(Point point) {
 		VerticalLayout root = new VerticalLayout();
 		root.setData(point);
-		
+
 		GridLayout main = new GridLayout(2, 1);
 		main.setSpacing(true);
 		main.setDefaultComponentAlignment(Alignment.MIDDLE_RIGHT);
@@ -340,7 +365,7 @@ public class MainUI extends UI {
 	private VerticalLayout createQuestionUI(Question question) {
 		VerticalLayout root = new VerticalLayout();
 		root.setData(question);
-		
+
 		GridLayout main = new GridLayout(2, 1);
 		main.setSpacing(true);
 		main.setDefaultComponentAlignment(Alignment.MIDDLE_RIGHT);
@@ -413,17 +438,17 @@ public class MainUI extends UI {
 		});
 
 		CheckBox isCorrect = new CheckBox("isCorrect:");
-		isCorrect.addValueChangeListener(new ValueChangeListener(){
+		isCorrect.addValueChangeListener(new ValueChangeListener() {
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				if((boolean)event.getProperty().getValue()){
-					for(CheckBox c : checks){
-						if(c!=isCorrect){
+				if ((boolean) event.getProperty().getValue()) {
+					for (CheckBox c : checks) {
+						if (c != isCorrect) {
 							c.setValue(false);
 						}
 					}
 				}
-			}			
+			}
 		});
 		checks.add(isCorrect);
 		data.add(1, isCorrect);
