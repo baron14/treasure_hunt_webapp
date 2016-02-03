@@ -105,6 +105,7 @@ public class MainUI extends UI {
 			public void buttonClick(ClickEvent event) {
 				System.out.println(route.toString());
 				routeDao.create(route);
+				savedRoutes = routeDao.getRoutes(); //TODO refresh routes list on save
 			}
 		});
 		saveButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
@@ -236,6 +237,7 @@ public class MainUI extends UI {
 		main.addComponent(grid);
 
 		TextField name = new TextField();
+		name.setValue(step.getName());
 		name.setWidth(TEXTFIELD_WIDTH);
 		name.addTextChangeListener(new TextChangeListener() {
 			@Override
@@ -246,6 +248,7 @@ public class MainUI extends UI {
 		grid.addComponents(new Label("Step Name:"), name);
 
 		TextField text = new TextField();
+		text.setValue(step.getTask());
 		text.setWidth(TEXTFIELD_WIDTH);
 		text.addTextChangeListener(new TextChangeListener() {
 			@Override
@@ -256,6 +259,7 @@ public class MainUI extends UI {
 		grid.addComponents(new Label("Text:"), text);
 
 		TextField treasure = new TextField();
+		treasure.setValue(step.getTreasure());
 		treasure.setWidth(TEXTFIELD_WIDTH);
 		treasure.addTextChangeListener(new TextChangeListener() {
 			@Override
@@ -266,6 +270,7 @@ public class MainUI extends UI {
 		grid.addComponents(new Label("Treasure:"), treasure);
 
 		TextField solution = new TextField();
+		solution.setValue(step.getSolution());
 		solution.setWidth(TEXTFIELD_WIDTH);
 		solution.addTextChangeListener(new TextChangeListener() {
 			@Override
@@ -343,6 +348,7 @@ public class MainUI extends UI {
 		main.setDefaultComponentAlignment(Alignment.MIDDLE_RIGHT);
 
 		TextField name = new TextField();
+		name.setValue(point.getName());
 		name.setWidth(TEXTFIELD_WIDTH);
 		name.addTextChangeListener(new TextChangeListener() {
 			@Override
@@ -354,6 +360,7 @@ public class MainUI extends UI {
 
 		// Map
 		TextField loc = new TextField();
+		loc.setValue(point.getLatitude()+", "+point.getLongitude());
 		loc.addTextChangeListener(new TextChangeListener() {
 			@Override
 			public void textChange(TextChangeEvent event) {
@@ -391,6 +398,7 @@ public class MainUI extends UI {
 		main.setComponentAlignment(horiz, Alignment.MIDDLE_LEFT);
 
 		TextField mrange = new TextField();
+		mrange.setValue(Float.toString(point.getHr().getMRange()));
 		mrange.setWidth(TEXTFIELD_WIDTH);
 		mrange.addTextChangeListener(new TextChangeListener() {
 			@Override
@@ -401,6 +409,7 @@ public class MainUI extends UI {
 		main.addComponents(new Label("M Range:"), mrange);
 
 		TextField srange = new TextField();
+		srange.setValue(Float.toString(point.getHr().getSRange()));
 		srange.setWidth(TEXTFIELD_WIDTH);
 		srange.addTextChangeListener(new TextChangeListener() {
 			@Override
@@ -421,6 +430,7 @@ public class MainUI extends UI {
 		main.addComponent(new Label("Question #:"));
 
 		TextArea questionText = new TextArea();
+		questionText.setValue(question.getQuestion());
 		questionText.setWidth(TEXTFIELD_WIDTH);
 		questionText.addTextChangeListener(new TextChangeListener() {
 			@Override
@@ -472,6 +482,7 @@ public class MainUI extends UI {
 		main.setData(data);
 
 		TextArea answer = new TextArea();
+		//TODO add existing answers
 		answer.setWidth(TEXTFIELD_WIDTH);
 		answer.addTextChangeListener(new TextChangeListener() {
 			@Override

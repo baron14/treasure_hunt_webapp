@@ -2,6 +2,7 @@ package treasure_hunt_webapp.dao;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -10,14 +11,15 @@ import javax.xml.xpath.XPathExpressionException;
 import org.bson.types.ObjectId;
 import org.xml.sax.SAXException;
 
-import treasure_hunt_webapp.models.route.Route;
-
 import com.googlecode.mjorm.MongoDao;
 import com.googlecode.mjorm.MongoDaoImpl;
 import com.googlecode.mjorm.XmlDescriptorObjectMapper;
+import com.mongodb.BasicDBList;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+
+import treasure_hunt_webapp.models.route.Route;
 
 public class RouteDao {
 
@@ -27,6 +29,7 @@ public class RouteDao {
 	private static final String DB_PASSWORD = "admin";
 
 	private MongoDao dao;
+	private DB db;
 
 	public RouteDao(File xmlFile) throws XPathExpressionException,
 			ClassNotFoundException, IOException, ParserConfigurationException,
@@ -38,7 +41,7 @@ public class RouteDao {
 		XmlDescriptorObjectMapper objectMapper = new XmlDescriptorObjectMapper();
 		objectMapper.addXmlObjectDescriptor(xmlFile);
 
-		DB db = mongo.getDB(DB_NAME);
+		db = mongo.getDB(DB_NAME);
 
 		dao = new MongoDaoImpl(db, objectMapper);
 	}
@@ -52,8 +55,12 @@ public class RouteDao {
 	}
 	
 	public Route[] getRoutes(){
-		ObjectId[] ids = new ObjectId[]{new ObjectId("56ad3679548c5a5da726dd74")};
-		return dao.readObjects("routes", ids, Route.class);
+		List<ObjectId> ids = new ArrayList<ObjectId>();
+		for(Object id : ((BasicDBList)db.getCollection("routes").distinct("_id"))){
+			ids.add((ObjectId)id);
+		}
+	
+		return dao.readObjects("routes", ids.toArray(), Route.class);
 	}
 
 }
