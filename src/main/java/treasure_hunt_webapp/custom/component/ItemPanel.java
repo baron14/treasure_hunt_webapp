@@ -76,34 +76,35 @@ public abstract class ItemPanel extends Panel {
 		main.addLayoutClickListener(new LayoutClickListener() {
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
-				addItemInner();
+				addItem();
 			}
 		});
 		return main;
 	}
-
-	private void addItemInner(){
+	
+	public abstract void addExistingItem(Object item);
+	
+	protected void addItemInner(VerticalLayout addItemLayout){
 		Label delete = new Label();
 		delete.setContentMode(ContentMode.HTML);
 		delete.setValue(FontAwesome.MINUS.getHtml());
 		VerticalLayout deleteLayout = new VerticalLayout(delete);
-		
-		VerticalLayout addedItem = addItem();
-		HorizontalLayout main = new HorizontalLayout(deleteLayout, addedItem);
+	
+		HorizontalLayout main = new HorizontalLayout(deleteLayout, addItemLayout);
 		main.setSpacing(true);
 		
 		deleteLayout.addLayoutClickListener(new LayoutClickListener() {
 			@Override
 			public void layoutClick(LayoutClickEvent event) {
 				content.removeComponent(main);
-				removeItem(addedItem.getData());		
+				removeItem(addItemLayout.getData());		
 			}
 		});
 		
 		content.addComponent(main);
 	}
 	
-	public abstract VerticalLayout addItem();
+	public abstract void addItem();
 
 	public abstract void removeItem(Object object);
 	

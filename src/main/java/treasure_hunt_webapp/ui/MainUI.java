@@ -4,18 +4,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import treasure_hunt_webapp.custom.component.ItemPanel;
-import treasure_hunt_webapp.dao.RouteDao;
-import treasure_hunt_webapp.models.route.HeartRate;
-import treasure_hunt_webapp.models.route.Point;
-import treasure_hunt_webapp.models.route.Question;
-import treasure_hunt_webapp.models.route.Route;
-import treasure_hunt_webapp.models.route.Step;
-
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.data.util.IndexedContainer;
+import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.server.FontAwesome;
@@ -33,12 +27,21 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
+
+import treasure_hunt_webapp.custom.component.ItemPanel;
+import treasure_hunt_webapp.dao.RouteDao;
+import treasure_hunt_webapp.models.route.HeartRate;
+import treasure_hunt_webapp.models.route.Point;
+import treasure_hunt_webapp.models.route.Question;
+import treasure_hunt_webapp.models.route.Route;
+import treasure_hunt_webapp.models.route.Step;
 
 @Theme("valo")
 @SpringUI
@@ -107,29 +110,39 @@ public class MainUI extends UI {
 		saveButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 		content.addComponent(saveButton);
 
-		ComboBox routesList = new ComboBox("Saved Routes");
-		for (Route r : savedRoutes) {
-			Object id = routesList.addItem();
-			routesList.setItemCaption(id, r.getName());
-		}
-		routesList.addValueChangeListener(new ValueChangeListener() {
+		Button newButton = new Button("New", new ClickListener() {
 			@Override
-			public void valueChange(ValueChangeEvent event) {
-				Route loadingRoute = savedRoutes[(Integer) event.getProperty()
-						.getValue() - 1];
-				System.out.println(loadingRoute);
+			public void buttonClick(ClickEvent event) {
+				route = new Route();
+				setContent(createUI());
 			}
 		});
+		newButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+		content.addComponent(newButton);
 		
-		Button loadButton = new Button(
-				"Load", new ClickListener() {
-					@Override
-					public void buttonClick(ClickEvent event) {
-						System.out.println("Loading...");
-						System.out.println(routesList.getItem(routesList
-								.getValue())); // TODO
-					}
-				});
+		ComboBox routesList = new ComboBox("Saved Routes");
+		IndexedContainer container = new IndexedContainer();
+		container.addContainerProperty("route", Route.class, null);
+		routesList.setContainerDataSource(container);
+
+		for (Route r : savedRoutes) {
+			Object id = routesList.addItem();
+			routesList.getItem(id).getItemProperty("route").setValue(r);
+			routesList.setItemCaption(id, r.getName());
+		}
+
+		Button loadButton = new Button("Load", new ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				if (routesList.getValue() != null) {
+					route = (Route) routesList.getItem(routesList.getValue()).getItemProperty("route").getValue();
+					setContent(createUI());
+				}
+				else{
+					Notification.show("Must select a route to load.");
+				}
+			}
+		});
 		loadButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 		HorizontalLayout horizLoad = new HorizontalLayout(routesList, loadButton);
 		horizLoad.setComponentAlignment(loadButton, Alignment.BOTTOM_LEFT);
@@ -144,7 +157,7 @@ public class MainUI extends UI {
 
 		// Main
 		VerticalLayout main = new VerticalLayout(back);
-		//main.setSizeFull();
+		// main.setSizeFull();
 		main.setSizeUndefined();
 		main.setWidth("100%");
 		main.setExpandRatio(back, 6f);
@@ -158,6 +171,7 @@ public class MainUI extends UI {
 		main.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
 		TextField name = new TextField();
+		name.setValue(route.getName());
 		name.setWidth(TEXTFIELD_WIDTH);
 		name.addTextChangeListener(new TextChangeListener() {
 			@Override
@@ -175,7 +189,7 @@ public class MainUI extends UI {
 
 		steps = new ItemPanel("Steps") {
 			@Override
-			public VerticalLayout addItem() {
+			public void addItem() {
 				Step step = new Step();
 				step.setName("");
 				step.setTask("");
@@ -183,7 +197,12 @@ public class MainUI extends UI {
 				step.setSolution("");
 
 				route.getSteps().add(step);
-				return createStepUI(step);
+				this.addItemInner(createStepUI(step));
+			}
+			
+			@Override
+			public void addExistingItem(Object item){
+				this.addItemInner(createStepUI((Step)item));
 			}
 
 			@Override
@@ -191,12 +210,16 @@ public class MainUI extends UI {
 				if (route.getSteps().contains(object)) {
 					route.getSteps().remove(object);
 				} else {
-					throw new RuntimeException("Object " + object
-							+ " does not exist.");
+					throw new RuntimeException("Object " + object + " does not exist.");
 				}
 			}
 
 		};
+		
+		for(Step step : route.getSteps()){
+			steps.addExistingItem(step);
+		}
+		
 		main.addComponent(steps);
 
 		return main;
@@ -254,13 +277,18 @@ public class MainUI extends UI {
 
 		ItemPanel points = new ItemPanel("Points:") {
 			@Override
-			public VerticalLayout addItem() {
+			public void addItem() {
 				Point point = new Point();
 				point.setHr(new HeartRate());
 				point.setName("");
 
 				step.getPoints().add(point);
-				return createPointUI(point);
+				this.addItemInner(createPointUI(point));
+			}
+			
+			@Override
+			public void addExistingItem(Object item){
+				this.addItemInner(createPointUI((Point)item));
 			}
 
 			@Override
@@ -268,8 +296,7 @@ public class MainUI extends UI {
 				if (step.getPoints().contains(object)) {
 					step.getPoints().remove(object);
 				} else {
-					throw new RuntimeException("Object " + object
-							+ " does not exist.");
+					throw new RuntimeException("Object " + object + " does not exist.");
 				}
 			}
 		};
@@ -277,7 +304,7 @@ public class MainUI extends UI {
 
 		ItemPanel questions = new ItemPanel("Questions:") {
 			@Override
-			public VerticalLayout addItem() {
+			public void addItem() {
 				Question question = new Question();
 				question.setAnswers(new ArrayList<String>());
 				question.setCorrectAnswer("");
@@ -285,16 +312,20 @@ public class MainUI extends UI {
 
 				step.getQuestions().add(question);
 
-				return createQuestionUI(question);
+				this.addItemInner(createQuestionUI(question));
 			}
 
+			@Override
+			public void addExistingItem(Object item){
+				this.addItemInner(createQuestionUI((Question)item));
+			}
+			
 			@Override
 			public void removeItem(Object object) {
 				if (step.getQuestions().contains(object)) {
 					step.getQuestions().remove(object);
 				} else {
-					throw new RuntimeException("Object " + object
-							+ " does not exist.");
+					throw new RuntimeException("Object " + object + " does not exist.");
 				}
 			}
 		};
@@ -388,7 +419,7 @@ public class MainUI extends UI {
 		main.setData(question);
 
 		main.addComponent(new Label("Question #:"));
-		
+
 		TextArea questionText = new TextArea();
 		questionText.setWidth(TEXTFIELD_WIDTH);
 		questionText.addTextChangeListener(new TextChangeListener() {
@@ -403,8 +434,13 @@ public class MainUI extends UI {
 			List<CheckBox> checks = new ArrayList<CheckBox>();
 
 			@Override
-			public VerticalLayout addItem() {
-				return createAnswerUI(question, checks);
+			public void addItem() {
+				this.addItemInner(createAnswerUI(question, checks));
+			}
+			
+			@Override
+			public void addExistingItem(Object item){
+				this.addItemInner(createAnswerUI(question, checks));
 			}
 
 			@Override
@@ -413,16 +449,14 @@ public class MainUI extends UI {
 				if (question.getAnswers().contains(checkBox)) {
 					checks.remove(checkBox);
 				} else {
-					throw new RuntimeException("Object " + checkBox
-							+ " does not exist.");
+					throw new RuntimeException("Object " + checkBox + " does not exist.");
 				}
 
 				Object value = ((ArrayList) object).get(0);
 				if (question.getAnswers().contains(value)) {
 					question.getAnswers().remove(value);
 				} else {
-					throw new RuntimeException("Object " + value
-							+ " does not exist.");
+					throw new RuntimeException("Object " + value + " does not exist.");
 				}
 			}
 		};
@@ -431,8 +465,7 @@ public class MainUI extends UI {
 		return main;
 	}
 
-	private VerticalLayout createAnswerUI(Question question,
-			List<CheckBox> checks) {
+	private VerticalLayout createAnswerUI(Question question, List<CheckBox> checks) {
 		VerticalLayout main = new VerticalLayout();
 		List<Object> data = new ArrayList<Object>();
 		data.add("");
@@ -443,15 +476,15 @@ public class MainUI extends UI {
 		answer.addTextChangeListener(new TextChangeListener() {
 			@Override
 			public void textChange(TextChangeEvent event) {
-				Object oldValue = data.get(0);
+				Object oldValue = data.get(0); // TODO change to map
 				if (question.getAnswers().contains(oldValue)) {
 					question.getAnswers().remove(oldValue);
 					question.getAnswers().add(event.getText());
 					data.remove(0);
 					data.add(0, event.getText());
 				} else {
-					throw new RuntimeException("Object " + oldValue
-							+ " does not exist.");
+					// throw new RuntimeException("Object " + oldValue
+					// + " does not exist.");
 				}
 			}
 		});
@@ -472,8 +505,7 @@ public class MainUI extends UI {
 		checks.add(isCorrect);
 		data.add(1, isCorrect);
 
-		HorizontalLayout horiz = new HorizontalLayout(new Label("Question #:"),
-				new Label("isCorrect:"), isCorrect);
+		HorizontalLayout horiz = new HorizontalLayout(new Label("Question #:"), new Label("isCorrect:"), isCorrect);
 		horiz.setSpacing(true);
 		main.addComponent(horiz);
 		main.addComponent(answer);
