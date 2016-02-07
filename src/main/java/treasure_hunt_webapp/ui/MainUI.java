@@ -53,7 +53,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 @Theme("valo")
 @SpringUI
-@VaadinServletConfiguration(widgetset = "com.vaadin.tapio.googlemaps.WidgetSet", productionMode = false, ui = MainUI.class)
+@VaadinServletConfiguration(widgetset = "treasure_hunt_webapp.widgetset", productionMode = false, ui = MainUI.class)
 public class MainUI extends UI {
 	private static final String TEXTFIELD_WIDTH = "500px";
 

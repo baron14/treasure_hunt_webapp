@@ -53,6 +53,23 @@
 			<version>1.1.2</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-client-compiler</artifactId>
+			<version>7.6.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.1.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.0</version>
+		</dependency>
 
 
 		<dependency>
@@ -69,54 +86,61 @@
 
 	</dependencies>
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<!-- Compiles your custom GWT components with the GWT compiler -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>gwt-maven-plugin</artifactId>
-				<!-- Version 2.1.0-1 works at least with Vaadin 6.5 -->
-				<version>2.1.0-1</version>
-				<configuration>
-					<!-- if you don't specify any modules, the plugin will find them -->
-					<!--modules> .. </modules -->
-					<webappDirectory>${project.build.directory}/${project.build.finalName}/VAADIN/widgetsets</webappDirectory>
-					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-					<runTarget>clean</runTarget>
-					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
-					<noServer>true</noServer>
-					<port>8080</port>
-					<soyc>false</soyc>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>resources</goal>
-							<goal>compile</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- Updates Vaadin 6.2+ widgetset definitions based on project dependencies -->
-			<plugin>
-				<groupId>com.vaadin</groupId>
-				<artifactId>vaadin-maven-plugin</artifactId>
-				<version>1.0.1</version>
-				<executions>
-					<execution>
-						<configuration>
-							<!-- if you don't specify any modules, the plugin will find them -->
-							<!-- <modules> <module>${package}.gwt.MyWidgetSet</module> </modules> -->
-						</configuration>
-						<goals>
-							<goal>update-widgetset</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.5.1</version>
+					<configuration>
+						<source>1.8</source>
+						<target>1.8</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>2.5</version>
+					<configuration>
+						<filesets>
+							<fileset>
+								<directory>src/main/webapp/VAADIN/widgetsets</directory>
+							</fileset>
+							<fileset>
+								<directory>src/main/webapp/VAADIN/gwt-unitCache</directory>
+							</fileset>
+						</filesets>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>com.vaadin</groupId>
+					<artifactId>vaadin-maven-plugin</artifactId>
+					<version>7.1.12</version>
+					<configuration>
+						<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+						<webappDirectory>${project.basedir}/src/main/webapp/VAADIN/widgetsets</webappDirectory>
+						<modules>
+							<module>jb.treasure_hunt_webapp.widgetset.gwt.xml</module>
+						</modules>
+						<hostedWebapp>${project.basedir}/src/main/webapp/VAADIN/widgetsets</hostedWebapp>
+						<noServer>true</noServer>
+						<draftCompile>false</draftCompile>
+						<style>OBF</style>
+						<strict>true</strict>
+						<compileReport>true</compileReport>
+						<runTarget>http://localhost:8080/</runTarget>
+					</configuration>
+					<executions>
+						<execution>
+							<configuration>
+							</configuration>
+							<goals>
+								<goal>resources</goal>
+								<goal>update-widgetset</goal>
+								<goal>compile</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 </project>
