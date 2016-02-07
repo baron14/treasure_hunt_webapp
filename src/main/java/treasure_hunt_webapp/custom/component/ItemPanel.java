@@ -84,7 +84,7 @@ public abstract class ItemPanel extends Panel {
 	
 	public abstract void addExistingItem(Object item);
 	
-	protected void addItemInner(VerticalLayout addItemLayout){
+	public void addItemInner(VerticalLayout addItemLayout){
 		Label delete = new Label();
 		delete.setContentMode(ContentMode.HTML);
 		delete.setValue(FontAwesome.MINUS.getHtml());
