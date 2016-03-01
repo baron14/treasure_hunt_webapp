@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 import treasure_hunt_webapp.models.route.Route;
 import xml.XMLRouteReader;
@@ -17,7 +18,10 @@ import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
+import treasure_hunt.service.MetricsController;
+
 @SpringBootApplication
+@ComponentScan(basePackageClasses = MetricsController.class)
 public class AppStart {
 
 	private static String dbuser = "admin";
