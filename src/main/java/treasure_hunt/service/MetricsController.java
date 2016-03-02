@@ -1,4 +1,4 @@
-package treasure_hunt.service;
+/*package treasure_hunt.service;
 
 
 import java.util.ArrayList;
@@ -30,3 +30,4 @@ public class MetricsController {
     }
 }
 
+*/

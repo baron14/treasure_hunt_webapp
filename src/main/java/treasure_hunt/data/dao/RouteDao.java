@@ -1,4 +1,4 @@
-package treasure_hunt_webapp.dao;
+package treasure_hunt.data.dao;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +19,7 @@ import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
-import treasure_hunt_webapp.models.route.Route;
+import treasure_hunt.data.models.route.Route;
 
 public class RouteDao {
 

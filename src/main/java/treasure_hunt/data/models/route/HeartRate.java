@@ -1,9 +1,9 @@
-package treasure_hunt_webapp.models.route;
+package treasure_hunt.data.models.route;
 
 public class HeartRate {
 	private float mRange;
 	private float sRange;
-	
+
 	public HeartRate() {
 		setMRange(0.0f);
 		setSRange(0.0f);
@@ -16,9 +16,9 @@ public class HeartRate {
 	public void setMRange(float mRange) {
 		this.mRange = mRange;
 	}
-	
+
 	public String toString() {
-		return "mRange: " + mRange + " sRange: " + sRange; 
+		return "mRange: " + mRange + " sRange: " + sRange;
 	}
 
 	public float getSRange() {

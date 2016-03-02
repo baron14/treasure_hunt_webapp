@@ -1,4 +1,4 @@
-package treasure_hunt_webapp.models.route;
+package treasure_hunt.data.models.route;
 
 import java.util.ArrayList;
 

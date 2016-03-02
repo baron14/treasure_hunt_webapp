@@ -1,4 +1,4 @@
-package treasure_hunt_webapp.models.route;
+package treasure_hunt.data.models.route;
 
 public class Point {
 	private int pointNo;
@@ -12,19 +12,19 @@ public class Point {
 		latitude = 0.0d;
 		longitude = 0.0d;
 	}
-	
+
 	public int getPointNo() {
 		return pointNo;
 	}
-	
+
 	public void setPointNo(int pointNo) {
 		this.pointNo = pointNo;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -52,9 +52,8 @@ public class Point {
 	public void setHr(HeartRate hr) {
 		this.hr = hr;
 	}
-	
+
 	public String toString() {
-		return "name: " + name + ", latitude: " + String.valueOf(latitude) + 
-				", longitude: " + String.valueOf(longitude) + ", hr: " + hr.toString(); 
+		return "name: " + name + ", latitude: " + String.valueOf(latitude) + ", longitude: " + String.valueOf(longitude) + ", hr: " + hr.toString();
 	}
 }

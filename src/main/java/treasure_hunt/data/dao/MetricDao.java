@@ -1,4 +1,4 @@
-package treasure_hunt_webapp.dao;
+/*package treasure_hunt_webapp.dao;
 
 
 import java.util.ArrayList;
@@ -58,3 +58,4 @@ public class MetricDao {
 		 //
 	}
 }
+*/

@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <descriptors>
-	<object class="treasure_hunt_webapp.models.route.Route">
+	<object class="treasure_hunt.data.models.route.Route">
 		<property name="id" id="true" auto="true" />
 		<property name="name" />
 		<property name="steps" />
 	</object>
 
-	<object class="treasure_hunt_webapp.models.route.Step">
+	<object class="treasure_hunt.data.models.route.Step">
 		<property name="stepNo" />
 		<property name="name" />
 		<property name="task" />
@@ -16,7 +16,7 @@
 		<property name="questions" />
 	</object>
 
-	<object class="treasure_hunt_webapp.models.route.Point">
+	<object class="treasure_hunt.data.models.route.Point">
 		<property name="pointNo" />
 		<property name="name" />
 		<property name="latitude" />
@@ -24,14 +24,14 @@
 		<property name="hr" />
 	</object>
 
-	<object class="treasure_hunt_webapp.models.route.Question">
+	<object class="treasure_hunt.data.models.route.Question">
 		<property name="question" />
 		<property name="answers" />
 		<property name="isImage" />
 		<property name="correctAnswer" />
 	</object>
 
-	<object class="treasure_hunt_webapp.models.route.HeartRate">
+	<object class="treasure_hunt.data.models.route.HeartRate">
 		<property name="mRange" />
 		<property name="sRange" />
 	</object>
