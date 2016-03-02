@@ -1,8 +1,8 @@
 @import "../reindeer/legacy-styles.css";
 
-  .background {
+.background {
 	background: #C0C0C0;
-  }
+}
 
 .content {
 	background: white;
@@ -12,6 +12,11 @@
 	background: black;
 }
 
-.innerHeader{
+.innerHeader {
 	background: white
 }
+
+.smallMargin.v-margin-left   {padding-left:   5px;}
+.smallMargin.v-margin-right  {padding-right:  5px;}
+.smallMargin.v-margin-top    {padding-top:    5px;}
+.smallMargin.v-margin-bottom {padding-bottom: 5px;}

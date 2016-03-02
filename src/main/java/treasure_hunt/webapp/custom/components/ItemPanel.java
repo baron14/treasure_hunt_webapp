@@ -1,5 +1,7 @@
 package treasure_hunt.webapp.custom.components;
 
+import org.vaadin.dialogs.ConfirmDialog;
+
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Component;
@@ -7,6 +9,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -44,22 +47,40 @@ public abstract class ItemPanel extends Panel {
 		VerticalLayout iconLayout = new VerticalLayout(iconLabel);
 		iconLayout.addLayoutClickListener(event -> {
 			content.setVisible(!content.isVisible());
-			iconLabel.setValue(content.isVisible() ? FontAwesome.MINUS_CIRCLE.getHtml() : FontAwesome.PLUS_CIRCLE.getHtml());
+			iconLabel.setValue(content.isVisible() ? FontAwesome.MINUS_CIRCLE
+					.getHtml() : FontAwesome.PLUS_CIRCLE.getHtml());
 		});
 
 		// The header component that holds the clickable icon and the header
 		// text
-		HorizontalLayout header = new HorizontalLayout(iconLayout, new Label(headerText));
-		header.setSpacing(true);
-
+		HorizontalLayout header = new HorizontalLayout(iconLayout, new Label(
+				headerText));
+		header.setWidth("500px");
+		header.setMargin(true);
+		Panel headerPanel = new Panel(header);
+		headerPanel.setSizeUndefined();
+		
 		// The footer space that holds the 'Add' button for adding more items to
 		// the ItemPanel
-		HorizontalLayout footer = new HorizontalLayout(createAdd());
+		Label addPadding = new Label();
+		addPadding.setWidth("15px");
+		HorizontalLayout footer = new HorizontalLayout(addPadding, createAdd());
+
+		VerticalLayout contentWrapper = new VerticalLayout(content);
+		contentWrapper.addStyleName("smallMargin");
+		contentWrapper.setMargin(true);
+		
+		VerticalLayout inner = new VerticalLayout(headerPanel, contentWrapper, footer);
+		inner.setSizeFull();
+
+		Label padding = new Label();
+		padding.setWidth("50px");
 
 		// Create the root GUI component and add the header, content and footer
 		// components
-		VerticalLayout main = new VerticalLayout(header, content, footer);
+		HorizontalLayout main = new HorizontalLayout(padding, inner);
 		main.setSizeFull();
+		main.setExpandRatio(inner, 3f);
 		this.setContent(main);
 	}
 
@@ -93,15 +114,22 @@ public abstract class ItemPanel extends Panel {
 		VerticalLayout deleteLayout = new VerticalLayout(delete);
 
 		// The root GUI component that holds the delete and add components
-		HorizontalLayout main = new HorizontalLayout(deleteLayout, addItemLayout);
+		HorizontalLayout main = new HorizontalLayout(deleteLayout,
+				addItemLayout);
 		main.setSpacing(true);
 		content.addComponent(main);
 
 		// Add the ClickListener that removes the element when the delete
 		// component is clicked
 		deleteLayout.addLayoutClickListener(event -> {
-			content.removeComponent(main);
-			removeItem(addItemLayout.getData());
+			ConfirmDialog.show(UI.getCurrent(), "Delete?",
+					"Are you sure you want to delete this item?", "Yes", "No",
+					(org.vaadin.dialogs.ConfirmDialog.Listener) dialog -> {
+						if (dialog.isConfirmed()) {
+							content.removeComponent(main);
+							removeItem(addItemLayout.getData());
+						}
+					});
 		});
 	}
 

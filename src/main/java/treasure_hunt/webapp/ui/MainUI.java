@@ -84,7 +84,6 @@ public class MainUI extends UI {
 	/**
 	 * Creates the GUI
 	 */
-	@SuppressWarnings("unchecked")
 	private Component createUI() {
 		// The 'Save' button that saves the current working route
 		Button saveButton = new Button("Save", (ClickListener) event -> {
@@ -437,12 +436,15 @@ public class MainUI extends UI {
 		image.setVisible(false);
 
 		// The components that make up the 'isImage' field of the route
-		CheckBox isImage = new CheckBox("IsImage");
-		isImage.addValueChangeListener(event -> question.setIsImage((boolean) event.getProperty().getValue()));
+		CheckBox isImage = new CheckBox("Has Image?");
 		UploadReciever receiver = new UploadReciever(image);
-		Upload upload = new Upload("Upload Image", receiver);
+		Upload upload = new Upload(null, receiver);
 		upload.addSucceededListener(receiver);
 
+		VerticalLayout imageLayout = new VerticalLayout(upload, image);
+		imageLayout.setVisible(false);
+		isImage.addValueChangeListener(event -> {question.setIsImage((boolean) event.getProperty().getValue()); imageLayout.setVisible(isImage.getValue());});
+		
 		// The components that make up the 'Question' field of the route
 		TextArea questionText = new TextArea();
 		questionText.setValue(question.getQuestion());
@@ -495,7 +497,7 @@ public class MainUI extends UI {
 		}
 
 		// The root GUI element that holds all other elements
-		VerticalLayout main = new VerticalLayout(new Label("Question #:"), isImage, upload, image, questionText, answers);
+		VerticalLayout main = new VerticalLayout(new Label("Question #:"), isImage, imageLayout, questionText, answers);
 		main.setData(question);
 		return main;
 	}
