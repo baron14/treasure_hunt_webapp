@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.vaadin.dialogs.ConfirmDialog;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.server.FontAwesome;
@@ -95,9 +97,14 @@ public class MainUI extends UI {
 
 		// The 'New' button that creates a new route and refreshes the GUI
 		Button newButton = new Button("New", (ClickListener) event -> {
-			route = new Route();
-			setContent(createUI());
-			// TODO Add 'Are you Sure?' or 'Do you want to save changes?'
+			ConfirmDialog.show(UI.getCurrent(), "New?",
+					"Creating a new map will clear any unsaved changes from the current map. Are you sure?", "Yes", "No",
+					(org.vaadin.dialogs.ConfirmDialog.Listener) dialog -> {
+						if (dialog.isConfirmed()) {
+							route = new Route();
+							setContent(createUI());
+						}
+					});
 			});
 		newButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 
@@ -130,7 +137,7 @@ public class MainUI extends UI {
 		HorizontalLayout horizLoad = new HorizontalLayout();
 		horizLoad.setSpacing(true);
 		horizLoad.setDefaultComponentAlignment(Alignment.BOTTOM_LEFT);
-		horizLoad.addComponents(saveButton, newButton, routesList, loadButton);
+		horizLoad.addComponents(newButton, saveButton, routesList, loadButton);
 
 		// The GUI components that detail and display a Route and all of its
 		// information
