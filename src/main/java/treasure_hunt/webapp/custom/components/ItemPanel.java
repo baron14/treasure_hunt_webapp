@@ -7,7 +7,6 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -21,10 +20,13 @@ public abstract class ItemPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	private Label iconLabel;
-	protected Layout content;
+	protected VerticalLayout content;
+
+	private VerticalLayout contentWrapper;
 
 	public ItemPanel(String headerText) {
 		this.content = new VerticalLayout();
+		this.content.setSpacing(true);
 
 		this.setSizeFull();
 		this.setStyleName(ValoTheme.PANEL_BORDERLESS);
@@ -35,6 +37,16 @@ public abstract class ItemPanel extends Panel {
 	 * Initialises the GUI components
 	 */
 	private void init(String headerText) {
+		// The footer space that holds the 'Add' button for adding more items to
+		// the ItemPanel
+		Label addPadding = new Label();
+		addPadding.setWidth("15px");
+		HorizontalLayout footer = new HorizontalLayout(addPadding, createAdd());
+
+		contentWrapper = new VerticalLayout(content);
+		contentWrapper.addStyleName("smallMargin");
+		contentWrapper.setMargin(false);
+
 		// The Label that holds the current Icon image - either minimise or
 		// maximise - as an HTML element
 		iconLabel = new Label();
@@ -45,11 +57,6 @@ public abstract class ItemPanel extends Panel {
 		// content panel. When clicked, the visibility of the content and the
 		// image for the min/max icon is flipped
 		VerticalLayout iconLayout = new VerticalLayout(iconLabel);
-		iconLayout.addLayoutClickListener(event -> {
-			content.setVisible(!content.isVisible());
-			iconLabel.setValue(content.isVisible() ? FontAwesome.MINUS_CIRCLE
-					.getHtml() : FontAwesome.PLUS_CIRCLE.getHtml());
-		});
 
 		// The header component that holds the clickable icon and the header
 		// text
@@ -59,18 +66,16 @@ public abstract class ItemPanel extends Panel {
 		header.setMargin(true);
 		Panel headerPanel = new Panel(header);
 		headerPanel.setSizeUndefined();
-		
-		// The footer space that holds the 'Add' button for adding more items to
-		// the ItemPanel
-		Label addPadding = new Label();
-		addPadding.setWidth("15px");
-		HorizontalLayout footer = new HorizontalLayout(addPadding, createAdd());
 
-		VerticalLayout contentWrapper = new VerticalLayout(content);
-		contentWrapper.addStyleName("smallMargin");
-		contentWrapper.setMargin(true);
+		header.addLayoutClickListener(event -> {
+			contentWrapper.setVisible(!contentWrapper.isVisible());
+			footer.setVisible(!footer.isVisible());
+			iconLabel.setValue(contentWrapper.isVisible() ? FontAwesome.MINUS_CIRCLE
+					.getHtml() : FontAwesome.PLUS_CIRCLE.getHtml());
+		});
 		
-		VerticalLayout inner = new VerticalLayout(headerPanel, contentWrapper, footer);
+		VerticalLayout inner = new VerticalLayout(headerPanel, contentWrapper,
+				footer);
 		inner.setSizeFull();
 
 		Label padding = new Label();
@@ -78,7 +83,7 @@ public abstract class ItemPanel extends Panel {
 
 		// Create the root GUI component and add the header, content and footer
 		// components
-		HorizontalLayout main = new HorizontalLayout(padding, inner);
+		HorizontalLayout main = new HorizontalLayout(inner);
 		main.setSizeFull();
 		main.setExpandRatio(inner, 3f);
 		this.setContent(main);
@@ -104,19 +109,27 @@ public abstract class ItemPanel extends Panel {
 
 	/**
 	 * 
-	 * @param addItemLayout
+	 * @param newItemContent
 	 */
-	public void addItemInner(VerticalLayout addItemLayout) {
+	public void addItemInner(VerticalLayout newItemContent) {
 		// The label with the 'Delete' image as an HTML element
 		Label delete = new Label();
 		delete.setContentMode(ContentMode.HTML);
 		delete.setValue(FontAwesome.MINUS.getHtml());
 		VerticalLayout deleteLayout = new VerticalLayout(delete);
 
+		contentWrapper.setMargin(true);
+		
+		Label padding = new Label();
+		padding.setWidth("20px");
+		padding.setHeight("20px");
+
 		// The root GUI component that holds the delete and add components
 		HorizontalLayout main = new HorizontalLayout(deleteLayout,
-				addItemLayout);
+				newItemContent);
 		main.setSpacing(true);
+		if (content.getComponentCount() != 0)
+			content.addComponent(padding);
 		content.addComponent(main);
 
 		// Add the ClickListener that removes the element when the delete
@@ -127,7 +140,8 @@ public abstract class ItemPanel extends Panel {
 					(org.vaadin.dialogs.ConfirmDialog.Listener) dialog -> {
 						if (dialog.isConfirmed()) {
 							content.removeComponent(main);
-							removeItem(addItemLayout.getData());
+							content.removeComponent(padding);
+							removeItemOuter(newItemContent.getData());
 						}
 					});
 		});
@@ -154,4 +168,9 @@ public abstract class ItemPanel extends Panel {
 	 *            - the Object to remove
 	 */
 	public abstract void removeItem(Object object);
+	
+	public void removeItemOuter(Object object){		
+		removeItem(object);
+		if(content.getComponentCount()==0) contentWrapper.setMargin(false);		
+	}
 }

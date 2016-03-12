@@ -90,7 +90,7 @@ public class MainUI extends UI {
 			routeDao.create(route);
 			savedRoutes = routeDao.getRoutes();
 			// TODO refresh routes list on save
-		});
+			});
 		saveButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 
 		// The 'New' button that creates a new route and refreshes the GUI
@@ -98,7 +98,7 @@ public class MainUI extends UI {
 			route = new Route();
 			setContent(createUI());
 			// TODO Add 'Are you Sure?' or 'Do you want to save changes?'
-		});
+			});
 		newButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 
 		// The list of all previously saved routes loaded from the database
@@ -118,7 +118,8 @@ public class MainUI extends UI {
 		// Otherwise, an error message is shown
 		Button loadButton = new Button("Load", (ClickListener) event -> {
 			if (routesList.getValue() != null) {
-				route = (Route) routesList.getItem(routesList.getValue()).getItemProperty("route").getValue();
+				route = (Route) routesList.getItem(routesList.getValue())
+						.getItemProperty("route").getValue();
 				setContent(createUI());
 			} else {
 				Notification.show("Must select a route to load.");
@@ -126,15 +127,18 @@ public class MainUI extends UI {
 		});
 		loadButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 
-		HorizontalLayout horizLoad = new HorizontalLayout(routesList, loadButton);
-		horizLoad.setComponentAlignment(loadButton, Alignment.BOTTOM_LEFT);
+		HorizontalLayout horizLoad = new HorizontalLayout();
+		horizLoad.setSpacing(true);
+		horizLoad.setDefaultComponentAlignment(Alignment.BOTTOM_LEFT);
+		horizLoad.addComponents(saveButton, newButton, routesList, loadButton);
 
 		// The GUI components that detail and display a Route and all of its
 		// information
 		Component routeUI = createRouteUI();
 
 		// The content component that holds most of the other components
-		VerticalLayout content = new VerticalLayout(saveButton, newButton, horizLoad, new Label("<hr />", Label.CONTENT_XHTML), routeUI);
+		VerticalLayout content = new VerticalLayout(horizLoad, new Label(
+				"<hr />", Label.CONTENT_XHTML), routeUI);
 		content.setMargin(true);
 		content.setSizeUndefined();
 		content.setWidth("80%");
@@ -207,7 +211,8 @@ public class MainUI extends UI {
 				if (route.getSteps().contains(object)) {
 					route.getSteps().remove(object);
 				} else {
-					throw new RuntimeException("Object " + object + " does not exist.");
+					throw new RuntimeException("Object " + object
+							+ " does not exist.");
 				}
 			}
 		};
@@ -237,22 +242,24 @@ public class MainUI extends UI {
 		name.setWidth(TEXTFIELD_WIDTH);
 		name.addTextChangeListener(event -> step.setName(event.getText()));
 
-		TextField text = new TextField();
+		TextArea text = new TextArea();
 		text.setValue(step.getTask());
 		text.setWidth(TEXTFIELD_WIDTH);
 		text.addTextChangeListener(event -> step.setTask(event.getText()));
 
 		// The components that make up the 'Treasure' field of the route
-		TextField treasure = new TextField();
+		TextArea treasure = new TextArea();
 		treasure.setValue(step.getTreasure());
 		treasure.setWidth(TEXTFIELD_WIDTH);
-		treasure.addTextChangeListener(event -> step.setTreasure(event.getText()));
+		treasure.addTextChangeListener(event -> step.setTreasure(event
+				.getText()));
 
 		// The components that make up the 'Solution' field of the route
-		TextField solution = new TextField();
+		TextArea solution = new TextArea();
 		solution.setValue(step.getSolution());
 		solution.setWidth(TEXTFIELD_WIDTH);
-		solution.addTextChangeListener(event -> step.setSolution(event.getText()));
+		solution.addTextChangeListener(event -> step.setSolution(event
+				.getText()));
 
 		// The ItemPanel that holds all 'Point' items for this route
 		ItemPanel points = new ItemPanel("Points:") {
@@ -282,7 +289,8 @@ public class MainUI extends UI {
 				if (step.getPoints().contains(object)) {
 					step.getPoints().remove(object);
 				} else {
-					throw new RuntimeException("Object " + object + " does not exist.");
+					throw new RuntimeException("Object " + object
+							+ " does not exist.");
 				}
 			}
 		};
@@ -322,7 +330,8 @@ public class MainUI extends UI {
 				if (step.getQuestions().contains(object)) {
 					step.getQuestions().remove(object);
 				} else {
-					throw new RuntimeException("Object " + object + " does not exist.");
+					throw new RuntimeException("Object " + object
+							+ " does not exist.");
 				}
 			}
 		};
@@ -337,7 +346,9 @@ public class MainUI extends UI {
 		GridLayout grid = new GridLayout(2, 1);
 		grid.setSpacing(true);
 		grid.setDefaultComponentAlignment(Alignment.MIDDLE_RIGHT);
-		grid.addComponents(new Label("Step Name:"), name, new Label("Text:"), text, new Label("Treasure:"), treasure, new Label("Solution:"), solution);
+		grid.addComponents(new Label("Step Name:"), name, new Label("Text:"),
+				text, new Label("Treasure:"), treasure, new Label("Solution:"),
+				solution);
 
 		// The root GUI element that holds all other elements
 		VerticalLayout main = new VerticalLayout(grid, points, questions);
@@ -368,7 +379,8 @@ public class MainUI extends UI {
 		// TODO Finish LngLat
 		TextField loc = new TextField();
 		loc.setValue(point.getLatitude() + ", " + point.getLongitude());
-		loc.addTextChangeListener(event -> System.out.println("LatLng=" + event.getText()));
+		loc.addTextChangeListener(event -> System.out.println("LatLng="
+				+ event.getText()));
 
 		// The button that when clicked shows the map popup
 		Button mapButton = new Button();
@@ -443,13 +455,17 @@ public class MainUI extends UI {
 
 		VerticalLayout imageLayout = new VerticalLayout(upload, image);
 		imageLayout.setVisible(false);
-		isImage.addValueChangeListener(event -> {question.setIsImage((boolean) event.getProperty().getValue()); imageLayout.setVisible(isImage.getValue());});
-		
+		isImage.addValueChangeListener(event -> {
+			question.setIsImage((boolean) event.getProperty().getValue());
+			imageLayout.setVisible(isImage.getValue());
+		});
+
 		// The components that make up the 'Question' field of the route
 		TextArea questionText = new TextArea();
 		questionText.setValue(question.getQuestion());
 		questionText.setWidth(TEXTFIELD_WIDTH);
-		questionText.addTextChangeListener(event -> question.setQuestion(event.getText()));
+		questionText.addTextChangeListener(event -> question.setQuestion(event
+				.getText()));
 
 		// The list of checkboxes from child answers
 		List<CheckBox> checks = new ArrayList<CheckBox>();
@@ -463,7 +479,8 @@ public class MainUI extends UI {
 
 			@Override
 			public void addExistingItem(Object item) {
-				throw new UnsupportedOperationException("AddExistingItem is not used by answer data.");
+				throw new UnsupportedOperationException(
+						"AddExistingItem is not used by answer data.");
 			}
 
 			@Override
@@ -471,11 +488,13 @@ public class MainUI extends UI {
 				// Removes the checkbox for the answer to be removed from the
 				// list if found. Otherwise something is wrong so an exception
 				// is thrown
-				CheckBox checkBox = (CheckBox) ((ArrayList<Object>) object).get(1);
+				CheckBox checkBox = (CheckBox) ((ArrayList<Object>) object)
+						.get(1);
 				if (question.getAnswers().contains(checkBox)) {
 					checks.remove(checkBox);
 				} else {
-					throw new RuntimeException("Object " + checkBox + " does not exist.");
+					throw new RuntimeException("Object " + checkBox
+							+ " does not exist.");
 				}
 
 				// Removes the 'data' object if it is contained in the data
@@ -485,7 +504,8 @@ public class MainUI extends UI {
 				if (question.getAnswers().contains(value)) {
 					question.getAnswers().remove(value);
 				} else {
-					throw new RuntimeException("Object " + value + " does not exist.");
+					throw new RuntimeException("Object " + value
+							+ " does not exist.");
 				}
 			}
 		};
@@ -493,11 +513,14 @@ public class MainUI extends UI {
 		// Different structure for answers than other ItemPanel data elements
 		String correctAnswer = question.getCorrectAnswer();
 		for (String answer : question.getAnswers()) {
-			answers.addItemInner(createAnswerUI(question, checks, correctAnswer == answer, answer));
+			answers.addItemInner(createAnswerUI(question, checks,
+					correctAnswer == answer, answer));
 		}
 
 		// The root GUI element that holds all other elements
-		VerticalLayout main = new VerticalLayout(new Label("Question #:"), isImage, imageLayout, questionText, answers);
+		VerticalLayout main = new VerticalLayout(questionText, isImage,
+				imageLayout, answers);
+		main.setSpacing(true);
 		main.setData(question);
 		return main;
 	}
@@ -507,7 +530,8 @@ public class MainUI extends UI {
 	 * 
 	 * @return the created GUI
 	 */
-	private VerticalLayout createAnswerUI(Question question, List<CheckBox> checks, boolean correctAnswer, String text) {
+	private VerticalLayout createAnswerUI(Question question,
+			List<CheckBox> checks, boolean correctAnswer, String text) {
 		// Initialise the array of data
 		List<Object> data = new ArrayList<Object>();
 		data.add("");
@@ -542,7 +566,8 @@ public class MainUI extends UI {
 		data.add(1, isCorrect);
 
 		// Aligns and positions the question and checkbox components properly
-		HorizontalLayout horiz = new HorizontalLayout(new Label("Question #:"), new Label("isCorrect:"), isCorrect);
+		HorizontalLayout horiz = new HorizontalLayout(new Label("isCorrect:"),
+				isCorrect);
 		horiz.setSpacing(true);
 
 		// The root GUI element that holds all other elements
