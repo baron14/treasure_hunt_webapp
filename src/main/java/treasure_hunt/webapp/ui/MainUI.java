@@ -4,9 +4,20 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.vaadin.dialogs.ConfirmDialog;
 
+import treasure_hunt.data.dao.RouteDao;
+import treasure_hunt.data.models.route.HeartRate;
+import treasure_hunt.data.models.route.Point;
+import treasure_hunt.data.models.route.Question;
+import treasure_hunt.data.models.route.Route;
+import treasure_hunt.data.models.route.Step;
+import treasure_hunt.webapp.custom.components.ItemPanel;
+import treasure_hunt.webapp.custom.receivers.UploadReciever;
+
 import com.vaadin.annotations.Theme;
+import com.vaadin.data.Container;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
@@ -32,15 +43,6 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
-import treasure_hunt.data.dao.RouteDao;
-import treasure_hunt.data.models.route.HeartRate;
-import treasure_hunt.data.models.route.Point;
-import treasure_hunt.data.models.route.Question;
-import treasure_hunt.data.models.route.Route;
-import treasure_hunt.data.models.route.Step;
-import treasure_hunt.webapp.custom.components.ItemPanel;
-import treasure_hunt.webapp.custom.receivers.UploadReciever;
-
 /**
  * The main UI for the treasure hunt web application
  */
@@ -59,6 +61,7 @@ public class MainUI extends UI {
 	protected Route route;
 	private ItemPanel steps;
 	private Route[] savedRoutes;
+	private ComboBox routesList;
 
 	/**
 	 * Initialises the UI and all necessary components
@@ -78,47 +81,61 @@ public class MainUI extends UI {
 
 		// Initialise a new Route
 		route = new Route();
+		route.setId(new ObjectId());
 
 		// Create the GUI
 		this.setContent(createUI());
 	}
 
-	/**
-	 * Creates the GUI
-	 */
-	private Component createUI() {
-		// The 'Save' button that saves the current working route
-		Button saveButton = new Button("Save", (ClickListener) event -> {
-			routeDao.create(route);
-			savedRoutes = routeDao.getRoutes();
-			// TODO refresh routes list on save
-			});
-		saveButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
-
-		// The 'New' button that creates a new route and refreshes the GUI
-		Button newButton = new Button("New", (ClickListener) event -> {
-			ConfirmDialog.show(UI.getCurrent(), "New?",
-					"Creating a new map will clear any unsaved changes from the current map. Are you sure?", "Yes", "No",
-					(org.vaadin.dialogs.ConfirmDialog.Listener) dialog -> {
-						if (dialog.isConfirmed()) {
-							route = new Route();
-							setContent(createUI());
-						}
-					});
-			});
-		newButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
-
-		// The list of all previously saved routes loaded from the database
-		IndexedContainer container = new IndexedContainer();
-		container.addContainerProperty("route", Route.class, null);
-		ComboBox routesList = new ComboBox("Saved Routes", container);
-
+	private void addRoutesToComboBox() {
+		routesList.removeAllItems();
+		
 		// Add all routes in the savedRoutes list to the ComboBox
 		for (Route r : savedRoutes) {
 			Object id = routesList.addItem();
 			routesList.getItem(id).getItemProperty("route").setValue(r);
 			routesList.setItemCaption(id, r.getName());
 		}
+	}
+
+	/**
+	 * Creates the GUI
+	 */
+	private Component createUI() {
+		
+		// The list of all previously saved routes loaded from the database
+		IndexedContainer container = new IndexedContainer();
+		container.addContainerProperty("route", Route.class, null);
+		routesList = new ComboBox("Saved Routes");
+		routesList.setContainerDataSource(container);
+		addRoutesToComboBox();
+		
+		// The 'Save' button that saves the current working route
+		Button saveButton = new Button("Save", (ClickListener) event -> {
+			routeDao.create(route);
+			savedRoutes = routeDao.getRoutes();
+			addRoutesToComboBox();
+			});
+		saveButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+
+		// The 'New' button that creates a new route and refreshes the GUI
+		Button newButton = new Button(
+				"New",
+				(ClickListener) event -> {
+					ConfirmDialog.show(
+							UI.getCurrent(),
+							"New?",
+							"Creating a new map will clear any unsaved changes from the current map. Are you sure?",
+							"Yes",
+							"No",
+							(org.vaadin.dialogs.ConfirmDialog.Listener) dialog -> {
+								if (dialog.isConfirmed()) {
+									route = new Route();
+									setContent(createUI());
+								}
+							});
+				});
+		newButton.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 
 		// The 'Load' button that loads the selected route from the ComboBox
 		// routesList if a route has been selected and refreshed the GUI.

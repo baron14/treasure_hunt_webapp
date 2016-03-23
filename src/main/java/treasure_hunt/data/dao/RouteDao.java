@@ -47,6 +47,8 @@ public class RouteDao {
 	}
 
 	public void create(Route route) {
+		//Generated ID should be unique so remove should only remove old versions of same object
+		dao.deleteObject("routes", route.getId()); 
 		dao.createObject(ROUTES_COLLECTION, route);
 	}
 
