@@ -473,7 +473,7 @@ public class MainUI extends UI {
 
 		// The components that make up the 'isImage' field of the route
 		CheckBox isImage = new CheckBox("Has Image?");
-		UploadReciever receiver = new UploadReciever(image);
+		UploadReciever receiver = new UploadReciever(image, question);
 		Upload upload = new Upload(null, receiver);
 		upload.addSucceededListener(receiver);
 

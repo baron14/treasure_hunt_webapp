@@ -29,6 +29,7 @@
 		<property name="answers" />
 		<property name="isImage" />
 		<property name="correctAnswer" />
+		<property name="image"/>
 	</object>
 
 	<object class="treasure_hunt.data.models.route.HeartRate">

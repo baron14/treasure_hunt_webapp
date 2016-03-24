@@ -2,6 +2,7 @@ package treasure_hunt.data.models.route;
 
 import java.util.ArrayList;
 
+
 /**
  * @author Mei Yii Lim
  *
@@ -14,6 +15,7 @@ public class Question {
 	private ArrayList<String> answers;
 	private Boolean isImage;
 	private String correctAnswer;
+	private String image;
 	
 	public Question(){
 		question = "";
@@ -54,6 +56,14 @@ public class Question {
 		return correctAnswer;
 	}
 	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	public String toString() {
 		return "question: " + question + ", answers: " + answers.toString() + ", correct answer: " + correctAnswer; 
 	}
