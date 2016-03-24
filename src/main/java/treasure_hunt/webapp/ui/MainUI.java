@@ -17,6 +17,7 @@ import treasure_hunt.webapp.custom.components.ItemPanel;
 import treasure_hunt.webapp.custom.receivers.UploadReciever;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Widgetset;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.server.FontAwesome;
@@ -50,6 +51,7 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme("valo")
 @SpringUI
 @SuppressWarnings({ "serial", "unchecked" })
+@Widgetset("hwu.treasure_hunt_webapp.MyAppWidgetset")
 public class MainUI extends UI {
 	private static final long serialVersionUID = 1L;
 	private static final String MJORM_ROUTES_PATH = "routes.mjorm.xml";
@@ -409,8 +411,8 @@ public class MainUI extends UI {
 		// The button that when clicked shows the map popup
 		Button mapButton = new Button();
 		mapButton.setIcon(FontAwesome.MAP_MARKER);
-		mapButton.addClickListener(event -> showMapPopup());
-
+		mapButton.addClickListener(event -> showMapPopup(loc));
+		
 		HorizontalLayout horiz = new HorizontalLayout(loc, mapButton);
 		grid.addComponents(new Label("LatLng:"), horiz);
 		grid.setComponentAlignment(horiz, Alignment.MIDDLE_LEFT);
@@ -438,25 +440,43 @@ public class MainUI extends UI {
 	/**
 	 * Creates and shows the window popup that has the Google Map functionality
 	 */
-	private void showMapPopup() {
+	private void showMapPopup(TextField latLngText) {		
+		TextField value = new TextField();
+
+		Window window = new Window();
+		window.center();
+		window.setModal(true);
+		window.setWidth("600px");
+		window.setHeight("600px");
+		
 		// Create the google map
-		GoogleMap googleMap = new GoogleMap(null, null, null);
-		googleMap.setCenter(new LatLon(55.9094, 3.3201));
+		GoogleMap googleMap = new GoogleMap("apiKey", null, "english");
+		googleMap.setCenter(new LatLon(55.909690, -3.320414));
+		googleMap.setMinZoom(12);
+		googleMap.setZoom(16);
+		googleMap.setWidth("600px");
+		googleMap.setHeight("450px");
+		googleMap.addMapClickListener(position -> value.setValue(position.getLat()+", "+position.getLon()));
 
-		// The Content component that holds everything else
-		VerticalLayout content = new VerticalLayout(googleMap);
-		content.setSizeFull();
+		Button submit = new Button("Submit", e -> { latLngText.setValue(value.getValue()); window.close(); });
 
-		// Create and configure the Window
-		Window popup = new Window("Select a location...", content);
-		popup.setDraggable(false);
-		popup.setModal(true);
-		popup.setHeight("200px");
-		popup.setWidth("200px");
-		popup.center();
-		popup.setVisible(true);
-
-		UI.getCurrent().addWindow(popup);
+		Label padding = new Label();
+		padding.setHeight("30px");
+		
+		HorizontalLayout horiz = new HorizontalLayout(new Label("LatLng:"), value);
+		horiz.setSpacing(true);
+		
+		VerticalLayout layout = new VerticalLayout(googleMap, horiz, submit);
+		layout.setComponentAlignment(googleMap, Alignment.MIDDLE_CENTER);
+		layout.setSpacing(true);
+		layout.setMargin(true);
+		
+		window.setContent(layout);
+		UI.getCurrent().addWindow(window);
+		
+		
+		
+		
 	}
 
 	/**
